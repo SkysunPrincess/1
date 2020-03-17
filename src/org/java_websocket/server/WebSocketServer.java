@@ -23,7 +23,7 @@
  *  OTHER DEALINGS IN THE SOFTWARE.
  */
 
-//package org.java_websocket.server;
+package org.java_websocket.server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -369,18 +369,11 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 							socket.setKeepAlive( true );
 							WebSocketImpl w = wsf.createWebSocket( this, drafts );
 							w.key = channel.register( selector, SelectionKey.OP_READ, w );
-							try {
-								w.channel = wsf.wrapChannel( channel, w.key );
-								i.remove();
-								allocateBuffers( w );
-								continue;
-							} catch (IOException ex) {
-								if( w.key != null )
-									w.key.toString();
-
-								handleIOException( w.key, null, ex );
-							}
+							w.channel = wsf.wrapChannel( channel, w.key );
+							i.remove();
+							allocateBuffers( w );
 							continue;
+							//continue;
 						}
 
 						if( key.isReadable() ) {
@@ -393,25 +386,20 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 								handleIOException( key, conn, new IOException() );
 								continue;
 							}
-							try {
-								if( SocketChannelIOHelper.read( buf, conn, conn.channel ) ) {
-									if( buf.hasRemaining() ) {
-										conn.inQueue.toString();
-										queue( conn );
-										i.remove();
-										if( conn.channel instanceof WrappedByteChannel ) {
-											if( ( (WrappedByteChannel) conn.channel ).isNeedRead() ) {
-												iqueue.add( conn );
-											}
+							if( SocketChannelIOHelper.read( buf, conn, conn.channel ) ) {
+								if( buf.hasRemaining() ) {
+									conn.inQueue.toString();
+									queue( conn );
+									i.remove();
+									if( conn.channel instanceof WrappedByteChannel ) {
+										if( ( (WrappedByteChannel) conn.channel ).isNeedRead() ) {
+											iqueue.add( conn );
 										}
-									} else
-										pushBuffer( buf );
-								} else {
+									}
+								} else
 									pushBuffer( buf );
-								}
-							} catch ( IOException e ) {
+							} else {
 								pushBuffer( buf );
-								throw e;
 							}
 						}
 						if( key.isWritable() ) {
@@ -426,18 +414,13 @@ public abstract class WebSocketServer extends AbstractWebSocket implements Runna
 						conn = iqueue.remove( 0 );
 						WrappedByteChannel c = ( (WrappedByteChannel) conn.channel );
 						ByteBuffer buf = takeBuffer();
-						try {
-							if( SocketChannelIOHelper.readMore( buf, conn, c ) )
-								iqueue.add( conn );
-							if( buf.hasRemaining() ) {
-								conn.inQueue.toString();
-								queue( conn );
-							} else {
-								pushBuffer( buf );
-							}
-						} catch ( IOException e ) {
+						if( SocketChannelIOHelper.readMore( buf, conn, c ) )
+							iqueue.add( conn );
+						if( buf.hasRemaining() ) {
+							conn.inQueue.toString();
+							queue( conn );
+						} else {
 							pushBuffer( buf );
-							throw e;
 						}
 
 					}
@@ -908,7 +891,7 @@ class CustomSSLWebSocketServerFactory {
 	Object enabledProtocols;
 	Object enabledCiphersuites;
 	Object wrapChannel(Object channel, Object key){
-		Object a;
+		Object a = null;
 		return a;
 	}
 }
@@ -916,11 +899,11 @@ class DefaultSSLWebSocketServerFactory {
 	Object sslcontext;
 	Object exec;
 	public Object wrapChannel(Object channel, Object key){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	public Object createWebSocket(Object a, Object d){
-		Object b;
+		Object b = null;
 		return b;
 	}
 	public void close(){
@@ -928,11 +911,11 @@ class DefaultSSLWebSocketServerFactory {
 }
 class DefaultWebSocketServerFactory implements WebSocketServerFactory{
 	public WebSocketImpl createWebSocket(Object a, Object d){
-		WebSocketImpl b;
+		WebSocketImpl b = null;
 		return b;
 	}
 	public Object wrapChannel(Object channel, Object key){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	public void close(){
@@ -965,15 +948,15 @@ class CloseFrame {
 	void setReason(Object reason){
 	}
 	int getCloseCode(){
-		int a;
+		int a = 0;
 		return a;
 	}
 	Object getMessage(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	public String toString(){
-		String a;
+		String a = null;
 		return a;
 	}
 	void isValid(){
@@ -983,7 +966,7 @@ class CloseFrame {
 	void updatePayload(){
 	}
 	Object getPayloadData(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 }
@@ -999,7 +982,7 @@ class InvalidDataException extends Exception{
 	long serialVersionUID=3731842424390998726L;
 	int closecode;
 	int getCloseCode(){
-		int a;
+		int a = 0;
 		return a;
 	}
 }
@@ -1014,93 +997,93 @@ class Draft {
 	Object role=null;
 	Object continuousFrameType=null;
 	Object readLine(Object buf){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object readStringLine(Object buf){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object translateHandshakeHttp(Object buf, Object role){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object acceptHandshakeAsClient(Object request, Object response){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object acceptHandshakeAsServer(Object handshakedata){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	boolean basicAccept(Object handshakedata){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	Object createBinaryFrame(Object framedata){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	List<Framedata> createFrames(Object binary, boolean mask){
-		List<Framedata> a;
+		List<Framedata> a = null;
 		return a;
 	}
 	void processFrame(Object webSocketImpl, Object frame){
 	}
 	Object continuousFrame(Object op, Object buffer, boolean fin){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	void reset(){
 	}
 	Object createHandshake(Object handshakedata, Object ownrole){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object createHandshake(Object handshakedata, Object ownrole, boolean withcontent){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object postProcessHandshakeRequestAsClient(Object request){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object postProcessHandshakeResponseAsServer(Object request, Object response){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object translateFrame(Object buffer){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object getCloseHandshakeType(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object copyInstance(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object translateHandshake(Object buf){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	int checkAlloc(int bytecount){
-		int a;
+		int a = 0;
 		return a;
 	}
 	int readVersion(Object handshakedata){
-		int a;
+		int a = 0;
 		return a;
 	}
 	void setParseMode(Object role){
 	}
 	Object getRole(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	public String toString(){
-		String a;
+		String a = null;
 		return a;
 	}
 }
@@ -1132,7 +1115,7 @@ class AbstractWebSocket {
 	Object connectionLostTimerTask;
 	int connectionLostTimeout=60;
 	int getConnectionLostTimeout(){
-		int a;
+		int a = 0;
 		return a;
 	}
 	void setConnectionLostTimeout(int connectionLostTimeout){
@@ -1147,19 +1130,19 @@ class AbstractWebSocket {
 	void run(){
 	}
 	Object connections(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	void cancelConnectionLostTimer(){
 	}
 	boolean isTcpNoDelay(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	void setTcpNoDelay(boolean tcpNoDelay){
 	}
 	boolean isReuseAddr(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	void setReuseAddr(boolean reuseAddr){
@@ -1168,49 +1151,49 @@ class AbstractWebSocket {
 class AbstractWrappedByteChannel {
 	Object channel;
 	int read(Object dst){
-		int a;
+		int a = 0;
 		return a;
 	}
 	boolean isOpen(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	void close(){
 	}
 	int write(Object src){
-		int a;
+		int a = 0;
 		return a;
 	}
 	boolean isNeedWrite(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	void writeMore(){
 	}
 	boolean isNeedRead(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	int readMore(Object dst){
-		int a;
+		int a = 0;
 		return a;
 	}
 	boolean isBlocking(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 }
 class SocketChannelIOHelper {
 	static boolean read(Object buf, Object ws, Object channel){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	static boolean readMore(Object buf, Object ws, Object channel){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	static boolean batch(Object ws, Object sockchannel){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 }
@@ -1223,31 +1206,31 @@ class SSLSocketChannel {
 	Object peerNetData;
 	Object executor;
 	int read(Object dst){
-		int a;
+		int a = 0;
 		return a;
 	}
 	int write(Object output){
-		int a;
+		int a = 0;
 		return a;
 	}
 	boolean doHandshake(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	Object enlargePacketBuffer(Object buffer){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object enlargeApplicationBuffer(Object buffer){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object enlargeBuffer(Object buffer, int sessionProposedCapacity){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object handleBufferUnderflow(Object buffer){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	void closeConnection(){
@@ -1255,25 +1238,25 @@ class SSLSocketChannel {
 	void handleEndOfStream(){
 	}
 	boolean isNeedWrite(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	void writeMore(){
 	}
 	boolean isNeedRead(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	int readMore(Object dst){
-		int a;
+		int a = 0;
 		return a;
 	}
 	boolean isBlocking(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	boolean isOpen(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	void close(){
@@ -1297,11 +1280,11 @@ class SSLSocketChannel2 {
 	void processHandshake(){
 	}
 	Object wrap(Object b){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	Object unwrap(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	void consumeDelegatedTasks(){
@@ -1309,71 +1292,71 @@ class SSLSocketChannel2 {
 	void createBuffers(Object session){
 	}
 	int write(Object src){
-		int a;
+		int a = 0;
 		return a;
 	}
 	int read(Object dst){
-		int a;
+		int a = 0;
 		return a;
 	}
 	int readRemaining(Object dst){
-		int a;
+		int a = 0;
 		return a;
 	}
 	boolean isConnected(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	void close(){
 	}
 	boolean isHandShakeComplete(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	Object configureBlocking(boolean b){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	boolean connect(Object remote){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	boolean finishConnect(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	Object socket(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	boolean isInboundDone(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	boolean isOpen(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	boolean isNeedWrite(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	void writeMore(){
 	}
 	boolean isNeedRead(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	int readMore(Object dst){
-		int a;
+		int a = 0;
 		return a;
 	}
 	int transfereTo(Object from, Object to){
-		int a;
+		int a = 0;
 		return a;
 	}
 	boolean isBlocking(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 }
@@ -1408,7 +1391,7 @@ interface WebSocket {
 }
 class WebSocketAdapter {
 	Object onWebsocketHandshakeReceivedAsServer(Object conn, Object draft, Object request){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	void onWebsocketHandshakeReceivedAsClient(Object conn, Object request, Object response){
@@ -1452,7 +1435,7 @@ class WebSocketImpl implements WebSocket{
 	public void decode(Object socketBuffer){
 	}
 	public boolean decodeHandshake(Object socketBufferNew){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	public void decodeFrames(Object socketBuffer){
@@ -1462,7 +1445,7 @@ class WebSocketImpl implements WebSocket{
 	public void closeConnectionDueToInternalServerError(Object exception){
 	}
 	public Object generateHttpResponseDueToError(int errorCode){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	public void close(int code, Object message, boolean remote){
@@ -1494,7 +1477,7 @@ class WebSocketImpl implements WebSocket{
 	public void sendPing(){
 	}
 	public boolean hasBufferedData(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	public void startHandshake(Object handshakedata){
@@ -1504,69 +1487,69 @@ class WebSocketImpl implements WebSocket{
 	public void open(Object d){
 	}
 	public boolean isConnecting(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	public boolean isOpen(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	public boolean isClosing(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	public boolean isFlushAndClose(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	public boolean isClosed(){
-		boolean a;
+		boolean a = false;
 		return a;
 	}
 	public Object getReadyState(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	public void setReadyState(Object readystate){
 	}
 	public int hashCode(){
-		int a;
+		int a = 0;
 		return a;
 	}
 	public String toString(){
-		String a;
+		String a = null;
 		return a;
 	}
 	public Object getRemoteSocketAddress(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	public Object getLocalSocketAddress(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	public Draft getDraft(){
-		Draft a;
+		Draft a = null;
 		return a;
 	}
 	public void close(){
 	}
 	public Object getResourceDescriptor(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	public long getLastPong(){
-		long a;
+		long a = 0;
 		return a;
 	}
 	public void updateLastPong(){
 	}
 	public Object getWebSocketListener(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	public Object getAttachment(){
-		Object a;
+		Object a = null;
 		return a;
 	}
 	public void setAttachment(Object attachment){
